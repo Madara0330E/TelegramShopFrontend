@@ -37,7 +37,12 @@ export default function Home() {
             .then((response) => response.json())
             .then((data) => {
               console.log("Validation Response:", data);
-              setValidationMessage(data.valid ? "✅ Валидация успешна!" : `❌ Ошибка: ${data.error}`);
+              
+              if (data.authToken) {
+                setValidationMessage("✅ Валидация успешна! Токен получен.");
+              } else {
+                setValidationMessage(`❌ Ошибка: ${data.error || "Неизвестная ошибка"}`);
+              }
             })
             .catch((error) => {
               console.error("Ошибка при отправке данных на сервер:", error);
