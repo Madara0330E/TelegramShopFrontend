@@ -6,8 +6,27 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      console.log("Telegram WebApp is available");
+    const script = document.createElement("script");
+    script.src = "https://telegram.org/js/telegram-web-app.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    script.onload = () => {
+      if (window.Telegram && window.Telegram.WebApp) {
+        console.log("Telegram WebApp SDK загружен");
+      } else {
+        console.error("Ошибка: Telegram WebApp SDK не загрузился");
+      }
+    };
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.Telegram && window.Telegram.WebApp) {
+      console.log("Telegram WebApp найден");
       const webApp = window.Telegram.WebApp;
       webApp.ready();
       console.log("WebApp is ready");
@@ -28,8 +47,9 @@ export default function Home() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "accept": "*/*"
         },
-        body: JSON.stringify({ InitData: initData }),
+        body: JSON.stringify({ initData }),
       })
         .then((response) => response.json())
         .then((data) => {
@@ -44,7 +64,7 @@ export default function Home() {
           setIsLoading(false);
         });
     } else {
-      console.error("Telegram WebApp is not available");
+      console.error("Ошибка: Telegram WebApp недоступен!");
       setValidationMessage("Ошибка: Telegram WebApp недоступен!");
     }
   }, []);
