@@ -1,0 +1,1 @@
+export { default } from "file:///C:/Users/Rafael%20Chasman/Documents/GitHub/TelegramShopFrontend/node_modules/@nuxt/vite-builder/dist/runtime/vite-node.mjs"
