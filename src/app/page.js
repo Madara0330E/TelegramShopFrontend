@@ -6,66 +6,61 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://telegram.org/js/telegram-web-app.js";
-    script.async = true;
-    document.body.appendChild(script);
+    if (typeof window !== "undefined") {
+      const checkTelegramWebApp = () => {
+        if (window.Telegram && window.Telegram.WebApp) {
+          console.log("Telegram WebApp найден");
+          const webApp = window.Telegram.WebApp;
+          webApp.ready();
+          console.log("WebApp is ready");
 
-    script.onload = () => {
+          const initData = webApp.initData;
+          console.log("Init Data:", initData);
+
+          if (!initData || initData.length === 0) {
+            console.error("Ошибка: Нет данных initData от Telegram.");
+            setValidationMessage("Ошибка: нет данных от Telegram!");
+            return;
+          }
+
+          setIsLoading(true);
+          setValidationMessage("Проверка...");
+
+          fetch("https://shop.chasman.engineer/api/v1/auth/validate-init", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "accept": "*/*",
+            },
+            body: JSON.stringify({ initData }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Validation Response:", data);
+              setValidationMessage(data.valid ? "✅ Валидация успешна!" : `❌ Ошибка: ${data.error}`);
+            })
+            .catch((error) => {
+              console.error("Ошибка при отправке данных на сервер:", error);
+              setValidationMessage("Ошибка при проверке пользователя.");
+            })
+            .finally(() => {
+              setIsLoading(false);
+            });
+        } else {
+          console.error("Ошибка: Telegram WebApp недоступен!");
+          setValidationMessage("Ошибка: Telegram WebApp недоступен!");
+        }
+      };
+
       if (window.Telegram && window.Telegram.WebApp) {
-        console.log("Telegram WebApp SDK загружен");
+        checkTelegramWebApp();
       } else {
-        console.error("Ошибка: Telegram WebApp SDK не загрузился");
+        const script = document.createElement("script");
+        script.src = "https://telegram.org/js/telegram-web-app.js";
+        script.async = true;
+        script.onload = checkTelegramWebApp;
+        document.body.appendChild(script);
       }
-    };
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.Telegram && window.Telegram.WebApp) {
-      console.log("Telegram WebApp найден");
-      const webApp = window.Telegram.WebApp;
-      webApp.ready();
-      console.log("WebApp is ready");
-
-      const initData = webApp.initData;
-      console.log("Init Data:", initData);
-
-      if (!initData || initData.length === 0) {
-        console.error("Ошибка: Нет данных initData от Telegram.");
-        setValidationMessage("Ошибка: нет данных от Telegram!");
-        return;
-      }
-
-      setIsLoading(true);
-      setValidationMessage("Проверка...");
-
-      fetch("https://shop.chasman.engineer/api/v1/auth/validate-init", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "accept": "*/*"
-        },
-        body: JSON.stringify({ initData }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Validation Response:", data);
-          setValidationMessage(data.valid ? "✅ Валидация успешна!" : `❌ Ошибка: ${data.error}`);
-        })
-        .catch((error) => {
-          console.error("Ошибка при отправке данных на сервер:", error);
-          setValidationMessage("Ошибка при проверке пользователя.");
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    } else {
-      console.error("Ошибка: Telegram WebApp недоступен!");
-      setValidationMessage("Ошибка: Telegram WebApp недоступен!");
     }
   }, []);
 
