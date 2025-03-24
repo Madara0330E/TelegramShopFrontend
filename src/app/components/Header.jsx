@@ -19,7 +19,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="flex p-3 py-2 justify-between w-full items-center self-stretch border-b border-[#2A282E] bg-[#0E0D10]">
+    <header className="flex p-2 py-2 justify-between w-full items-center self-stretch border-b border-[#2A282E] bg-[#0E0D10]">
       <div className="HeaderLogo  bg-[#0E0D10] w-full ">
         <img src="/img/Header/Shop.svg" alt="" />
       </div>
