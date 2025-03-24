@@ -9,8 +9,28 @@ export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState(null);
   const [tgUser, setTgUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [apiUser, setApiUser] = useState(null);
 
-  // Функция для проверки авторизации через Telegram
+
+  const fetchUserData = async (token) => {
+    try {
+      const response = await fetch("https://shop.chasman.engineer/api/v1/users/@me", {
+        headers: {
+          "accept": "*/*",
+          "Authorization": token
+        }
+      });
+      
+      if (response.ok) {
+        const userData = await response.json();
+        setApiUser(userData);
+      }
+    } catch (error) {
+      console.error("Failed to fetch user data:", error);
+    }
+  };
+
+  
   const validateTelegramAuth = async (initData) => {
     try {
       const response = await fetch("https://shop.chasman.engineer/api/v1/auth/validate-init", {
@@ -25,7 +45,8 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
       if (data.authToken) {
         setAuthToken(data.authToken);
-        // Здесь можно добавить парсинг данных пользователя из Telegram
+       
+        await fetchUserData(data.authToken);
         return true;
       }
       return false;
@@ -35,7 +56,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Инициализация Telegram WebApp
+
   const initTelegramWebApp = () => {
     if (typeof window !== "undefined" && window.Telegram?.WebApp) {
       const webApp = window.Telegram.WebApp;
@@ -68,12 +89,13 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider value={{ 
       authToken, 
       tgUser, 
+      apiUser, 
       isLoading, 
       isAuthenticated: !!authToken 
     }}>
-       <div className="min-h-screen bg-[#18172E]"> {/* Здесь меняете цвет */}
-      {children}
-    </div>
+      
+        {children}
+      
     </AuthContext.Provider>
   );
 };

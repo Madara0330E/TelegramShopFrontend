@@ -2,9 +2,10 @@
 
 import { useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import "../globals.css";
 
 export default function Header() {
-  const { authToken, tgUser, isLoading, isAuthenticated } = useAuth();
+  const { authToken, tgUser, apiUser, isLoading, isAuthenticated } = useAuth();
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -22,23 +23,29 @@ export default function Header() {
       <div className="HeaderLogo  bg-[#0E0D10] w-full ">
         <img src="/img/Header/Shop.svg" alt="" />
       </div>
-      <div className="flex justify-end items-center gap-[15px]">
-        <div className="Purchases">
-          <img src="/img/Header/Purchases.svg" alt="" />
+      <div className="flex justify-end items-center gap-[26px]">
+        <div className="Purchases flex">
+          <img src="/img/Header/Purchases.svg"  className="min-w-[26px] h-[20px] " alt="" />
         </div>
         <div className="flex w-[48px] h-[48px] justify-center items-center">
           {isLoading ? (
-            <div className="text-white">Loading...</div>
+            <div className=""></div>
           ) : isAuthenticated ? (
             <div className="flex items-center gap-2">
-              {tgUser?.photo_url ? (
+              {apiUser?.avatarUrl ? (
+                <img 
+                  src={apiUser.avatarUrl} 
+                  alt="User" 
+                  className="w-12 h-12 rounded-full"
+                />
+              ) : tgUser?.photo_url ? (
                 <img 
                   src={tgUser.photo_url} 
                   alt="User" 
-                  className="w-8 h-8 rounded-full"
+                  className="w-12 h-12 rounded-full"
                 />
               ) : (
-                <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-white">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center text-white">
                   {tgUser?.first_name?.[0]}
                 </div>
               )}
