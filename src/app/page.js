@@ -7,7 +7,7 @@ export default function Home() {
   const { isAuthenticated, isLoading } = useAuth();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#0E0D10]">
+    <div className="flex flex-col  min-h-screen bg-[#0E0D10]">
         <CategoriesList />
       <h1 className="text-3xl font-bold text-gray-800">Welcome to Telegram Mini App</h1>
       

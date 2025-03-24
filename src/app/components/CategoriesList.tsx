@@ -64,14 +64,14 @@ const CategoriesList: React.FC = () => {
 
   return (
     <div className="container mx-auto p-2 ">
-      <div className="w-full flex items-center justify-between">
-        <h1 className="mb-[3.125vw] text-[#EFEDF6] font-inter-tight text-[6.25vw] sm:text-[1.5rem] font-semibold leading-none typography-features">
+      <div className="w-full flex mb-[3.125vw] items-center justify-between">
+        <p className=" text-[#EFEDF6] font-inter-tight text-[6.25vw] font-semibold leading-none typography-features">
           Категории
-        </h1>
+        </p>
         <img
           src="img/CategoryCard/Arrow.svg"
           alt=""
-          className="w-[4.17vw] sm:w-[16px]"
+          className="w-[4.17vw]"
         />
       </div>
       <div className="grid grid-cols-4 gap-[2.08vw] ">
