@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/admin/Desktop/GITHUB/TelegramShopFrontend/src/app/page.js"],"sourcesContent":["\"use client\";\r\nimport Image from \"next/image\";\r\n\r\nexport default function Home() {\r\n  // Функция-обработчик нажатия\r\n  const handleClick = () => {\r\n    console.log(\"Консоль прилегла!\");\r\n  };\r\n\r\n  return (<div>\r\n\r\n    <p>3232test</p>\r\n    <p>3232test</p>\r\n    <p>3232test</p>\r\n\r\n  </div>\r\n\r\n  );\r\n}\r\n"],"names":[],"mappings":";;;;AACA;AADA;;;AAGe,SAAS;IACtB,6BAA6B;IAC7B,MAAM,cAAc;QAClB,QAAQ,GAAG,CAAC;IACd;IAEA,qBAAQ,6LAAC;;0BAEP,6LAAC;0BAAE;;;;;;0BACH,6LAAC;0BAAE;;;;;;0BACH,6LAAC;0BAAE;;;;;;;;;;;;AAKP;KAfwB"}},
+    {"offset": {"line": 56, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
+}
