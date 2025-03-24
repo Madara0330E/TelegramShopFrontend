@@ -71,7 +71,9 @@ export const AuthProvider = ({ children }) => {
       isLoading, 
       isAuthenticated: !!authToken 
     }}>
+       <div className="min-h-screen bg-[#18172E]"> {/* Здесь меняете цвет */}
       {children}
+    </div>
     </AuthContext.Provider>
   );
 };

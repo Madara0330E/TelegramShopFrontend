@@ -10,8 +10,12 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        // Добавляем кастомные цвета
+        primary: {
+          dark: "#18172E", // Ваш цвет фона
+        },
       },
     },
   },
   plugins: [],
-};
+}
