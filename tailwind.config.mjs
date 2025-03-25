@@ -10,10 +10,13 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        // Добавляем кастомные цвета
         primary: {
-          dark: "#18172E", // Ваш цвет фона
+          dark: "#18172E",
         },
+      },
+      // Добавляем кастомный шрифт
+      fontFamily: {
+        montserrat: ['Montserrat Alternates', 'sans-serif'],
       },
     },
   },

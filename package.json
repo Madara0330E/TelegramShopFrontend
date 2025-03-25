@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fontsource/inter-tight": "^5.2.5",
+    "@next/font": "^14.2.15",
+    "@tailwindcss/typography": "^0.5.16",
     "@twa-dev/sdk": "^8.0.2",
     "next": "15.1.5",
     "react": "^19.0.0",
