@@ -1,3 +1,6 @@
+// src/app/components/CategoryCard.tsx
+"use client";
+
 import React from "react";
 
 interface Category {
@@ -44,12 +47,14 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, isLoading = false
               alt=""
               className="w-[3.125vw] h-[3.125vw]"
             />
-            <span className="text-[#EFEDF6]  text-[4.1667vw] text-base  inter-tight-semibold  font-semibold leading-normal">Новое</span>
+            <span className="text-[#EFEDF6] text-[4.1667vw] text-base inter-tight-semibold font-semibold leading-normal">
+              Новое
+            </span>
           </span>
         )}
       </div>
       <div className="flex justify-center items-center mt-0.5 max-w-[22.14vw]">
-        <p className="text-[#EFEDF6] text-[3.6458vw] text-center w-full  break-words whitespace-normal normal-case font-medium leading-normal font-montserrat">
+        <p className="text-[#EFEDF6] text-[3.6458vw] text-center w-full break-words whitespace-normal normal-case font-medium leading-normal font-montserrat">
           {category.name}
         </p>
       </div>

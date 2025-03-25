@@ -3,13 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import CategoryCard from "./CategoryCard";
-
-interface Category {
-  id: string;
-  name: string;
-  iconUrl: string;
-  isNew: boolean;
-}
+import { fetchCategories, Category } from "./categoryApi";
 
 const CategoriesList: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -17,25 +11,10 @@ const CategoriesList: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const getCategories = async () => {
       try {
-        const response = await fetch(
-          "https://shop.chasman.engineer/api/v1/categories",
-          {
-            headers: {
-              accept: "*/*",
-              Authorization:
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIwNDU0MTE1MDkiLCJuYmYiOjE3NDIzOTIyOTEsImV4cCI6MTc0MjM5NTg5MSwiaWF0IjoxNzQyMzkyMjkxLCJpc3MiOiJtci5yYWZhZWxsbyJ9.1axn5_yWtp_JrGzPV1rpZfZlTJgTjJA4mwKWhugAGUY",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setCategories(data.categories);
+        const data = await fetchCategories();
+        setCategories(data);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "An unknown error occurred"
@@ -45,14 +24,13 @@ const CategoriesList: React.FC = () => {
       }
     };
 
-    fetchCategories();
+    getCategories();
   }, []);
 
   if (error) {
     return <div className="text-center py-8 text-red-500">Error: {error}</div>;
   }
 
-  // Отображаем только 8 категорий
   const displayedCategories = categories.slice(0, 8);
 
   return (
@@ -62,7 +40,6 @@ const CategoriesList: React.FC = () => {
           Категории
         </p>
         
-        {/* Кнопка перехода на страницу со всеми категориями */}
         <Link href="/all-categories">
           <img
             src="img/CategoryCard/Arrow.svg"

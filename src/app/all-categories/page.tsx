@@ -2,42 +2,20 @@
 
 import React, { useEffect, useState } from "react";
 import CategoryCard from "../components/CategoryCard";
-
-import { useRouter } from "next/navigation"; // Импорт из next/navigation
-
-interface Category {
-  id: string;
-  name: string;
-  iconUrl: string;
-  isNew: boolean;
-}
+import { useRouter } from "next/navigation";
+import { fetchCategories, Category } from "../components/categoryApi";
 
 export default function AllCategories() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter(); // Используем useRouter
+  const router = useRouter();
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const getCategories = async () => {
       try {
-        const response = await fetch(
-          "https://shop.chasman.engineer/api/v1/categories",
-          {
-            headers: {
-              accept: "*/*",
-              Authorization:
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIwNDU0MTE1MDkiLCJuYmYiOjE3NDIzOTIyOTEsImV4cCI6MTc0MjM5NTg5MSwiaWF0IjoxNzQyMzkyMjkxLCJpc3MiOiJtci5yYWZhZWxsbyJ9.1axn5_yWtp_JrGzPV1rpZfZlTJgTjJA4mwKWhugAGUY",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setCategories(data.categories);
+        const data = await fetchCategories();
+        setCategories(data);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "An unknown error occurred"
@@ -47,14 +25,13 @@ export default function AllCategories() {
       }
     };
 
-    fetchCategories();
+    getCategories();
   }, []);
 
   if (error) {
     return <div className="text-center py-8 text-red-500">Error: {error}</div>;
   }
 
-  // Функция для разбиения массива на группы по 4 элемента
   const chunkArray = (array: Category[], size: number) => {
     const result = [];
     for (let i = 0; i < array.length; i += size) {
@@ -70,7 +47,7 @@ export default function AllCategories() {
       <div className="w-full flex mb-[3.125vw] items-center justify-between">
         <img
           src="img/CategoryCard/ArrowLeft.svg"
-          alt="Перейти"
+          alt="Назад"
           onClick={() => router.back()}
           className="w-[4.17vw] cursor-pointer"
         />
@@ -79,11 +56,9 @@ export default function AllCategories() {
         </p>
         <img
           src="img/CategoryCard/Lupa.svg"
-          alt="Перейти"
+          alt="Поиск"
           className="w-[4.17vw] h-[4.17vw] cursor-pointer"
         />
-
-        {/* Кнопка перехода на страницу со всеми категориями */}
       </div>
 
       {loading ? (
