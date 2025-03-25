@@ -64,7 +64,7 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, isLoading = false })
                 alt="Иконка популярного" 
                 className="w-[1.875vw] h-[3.125vw]"
               />
-              <span className="text-[#EFEDF6] font-montserrat text-[3.5vw] font-semibold leading-none">
+              <span className="text-[#EFEDF6] font-montserrat text-[4.167vw] font-semibold leading-none">
                 Популярный
               </span>
             </div>
@@ -82,7 +82,7 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, isLoading = false })
                 alt="Иконка нового" 
                 className="w-[3.125vw] h-[3.125vw]"
               />
-              <span className="text-[#EFEDF6] font-montserrat text-[3.5vw] font-semibold leading-none">
+              <span className="text-[#EFEDF6] font-montserrat text-[4.167vw] font-semibold leading-none">
                 Новое
               </span>
             </div>
