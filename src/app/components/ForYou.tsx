@@ -57,12 +57,12 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, isLoading = false })
               style={{
                 background: "linear-gradient(90deg, #EC403A 0%, #E2964E 100%)",
               }}
-              className="flex justify-center py-1 px-2 items-center h-[5.5vw] gap-1 w-[32.292vw] rounded-[6px]"
+              className="flex justify-center py-1 px-2 items-center h-[7.031vw] gap-1 w-[32.292vw] rounded-[6px]"
             >
               <img 
                 src="img/ForYou/Exclude.svg" 
                 alt="Иконка популярного" 
-                className="w-[3vw] h-[3vw]"
+                className="w-[1.875vw] h-[3.125vw]"
               />
               <span className="text-[#EFEDF6] font-montserrat text-[3.5vw] font-semibold leading-none">
                 Популярный
@@ -75,12 +75,12 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, isLoading = false })
               style={{
                 background: "linear-gradient(90deg, #3C53E8 0%, #7DB3F6 100%)",
               }}
-              className="flex justify-center py-1 px-2 h-[5.5vw] items-center w-[20.573vw] gap-1 rounded-[6px]"
+              className="flex justify-center py-1 px-2 h-[7.031vw] items-center w-[20.573vw] gap-1 rounded-[6px]"
             >
               <img 
                 src="img/CategoryCard/SoftStar.svg" 
                 alt="Иконка нового" 
-                className="w-[3vw] h-[3vw]"
+                className="w-[3.125vw] h-[3.125vw]"
               />
               <span className="text-[#EFEDF6] font-montserrat text-[3.5vw] font-semibold leading-none">
                 Новое
