@@ -3,12 +3,14 @@
 import CategoriesList from './components/CategoriesList';
 import { useAuth } from "./context/AuthContext";
 import "./globals.css";
+import ForYouList from './components/ForYouList';
 export default function Home() {
   const { isAuthenticated, isLoading } = useAuth();
 
   return (
     <div className="flex flex-col  min-h-screen bg-[#0E0D10]">
         <CategoriesList />
+        <ForYouList />
       <h1 className="text-3xl font-bold text-gray-800">Welcome to Telegram Mini App</h1>
       
       {isLoading ? (

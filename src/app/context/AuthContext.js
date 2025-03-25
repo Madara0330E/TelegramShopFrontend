@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [tgUser, setTgUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [apiUser, setApiUser] = useState(null);
-
+  const [isWebAppReady, setIsWebAppReady] = useState(false);
 
   const fetchUserData = async (token) => {
     try {
@@ -30,7 +30,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  
   const validateTelegramAuth = async (initData) => {
     try {
       const response = await fetch("https://shop.chasman.engineer/api/v1/auth/validate-init", {
@@ -45,7 +44,6 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
       if (data.authToken) {
         setAuthToken(data.authToken);
-       
         await fetchUserData(data.authToken);
         return true;
       }
@@ -56,10 +54,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-
   const initTelegramWebApp = () => {
-    if (typeof window !== "undefined" && window.Telegram?.WebApp) {
+    if (window.Telegram?.WebApp) {
       const webApp = window.Telegram.WebApp;
+      
+      // Устанавливаем CSS-переменные для viewport
+      document.documentElement.style.setProperty(
+        '--tg-viewport-height', 
+        `${webApp.viewportHeight}px`
+      );
+      document.documentElement.style.setProperty(
+        '--tg-viewport-stable-height', 
+        `${webApp.viewportStableHeight}px`
+      );
+      
       webApp.ready();
       
       if (webApp.initData) {
@@ -68,21 +76,31 @@ export const AuthProvider = ({ children }) => {
           setIsLoading(false);
         });
       }
+      
+      setIsWebAppReady(true);
     }
   };
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (window.Telegram?.WebApp) {
-        initTelegramWebApp();
-      } else {
-        const script = document.createElement("script");
-        script.src = "https://telegram.org/js/telegram-web-app.js";
-        script.async = true;
-        script.onload = initTelegramWebApp;
-        document.body.appendChild(script);
-      }
+    // Проверяем, может WebApp уже загружен
+    if (window.Telegram?.WebApp) {
+      initTelegramWebApp();
+      return;
     }
+
+    // Если нет, загружаем скрипт
+    const script = document.createElement("script");
+    script.src = "https://telegram.org/js/telegram-web-app.js";
+    script.async = true;
+    script.onload = initTelegramWebApp;
+    document.body.appendChild(script);
+
+    return () => {
+      // Очистка при размонтировании
+      if (script.parentNode) {
+        document.body.removeChild(script);
+      }
+    };
   }, []);
 
   return (
@@ -91,11 +109,10 @@ export const AuthProvider = ({ children }) => {
       tgUser, 
       apiUser, 
       isLoading, 
+      isWebAppReady,
       isAuthenticated: !!authToken 
     }}>
-      
-        {children}
-      
+      {children}
     </AuthContext.Provider>
   );
 };
