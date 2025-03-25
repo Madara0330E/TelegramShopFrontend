@@ -32,6 +32,7 @@ export default function AllCategories() {
     return <div className="text-center py-8 text-red-500">Error: {error}</div>;
   }
 
+  // Функция для разбиения массива на группы по 4 элемента
   const chunkArray = (array: Category[], size: number) => {
     const result = [];
     for (let i = 0; i < array.length; i += size) {
@@ -62,11 +63,15 @@ export default function AllCategories() {
       </div>
 
       {loading ? (
-        <div className="grid grid-cols-4 gap-2 mb-2">
-          {[...Array(4)].map((_, index) => (
-            <CategoryCard key={`skeleton-${index}`} isLoading />
-          ))}
-        </div>
+        <div className="flex flex-col gap-2">
+        {[...Array(4)].map((_, rowIndex) => (
+          <div key={`skeleton-row-${rowIndex}`} className="grid grid-cols-4 gap-2">
+            {[...Array(4)].map((_, cardIndex) => (
+              <CategoryCard key={`skeleton-${rowIndex}-${cardIndex}`} isLoading />
+            ))}
+          </div>
+        ))}
+      </div>
       ) : categories.length === 0 ? (
         <div className="text-center py-8">Категории не найдены</div>
       ) : (

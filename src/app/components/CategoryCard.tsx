@@ -18,7 +18,7 @@ interface CategoryCardProps {
 const CategoryCard: React.FC<CategoryCardProps> = ({ category, isLoading = false }) => {
   if (isLoading || !category) {
     return (
-      <div className="rounded-lg shadow-md overflow-hidden w-full mb-2 animate-pulse">
+      <div className="rounded-lg shadow-md overflow-hidden w-full  animate-pulse">
         <div className="relative w-full aspect-square bg-gray-700 rounded-lg"></div>
         <div className="flex justify-center items-center mt-0.5 max-w-[22.14vw]">
           <div className="h-[4vw] w-[80%] bg-gray-700 rounded"></div>
@@ -28,7 +28,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, isLoading = false
   }
 
   return (
-    <div className="rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 w-full mb-2">
+    <div className="rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 w-full ">
       <div className="relative w-full aspect-square">
         <img
           src={category.iconUrl}
