@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import CategoriesList from "./components/CategoriesList";
 import { useAuth } from "./context/AuthContext";
@@ -9,6 +9,7 @@ import ForYouList from "./components/ForYouList";
 export default function Home() {
   const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -26,14 +27,13 @@ export default function Home() {
   }
 
   if (!isAuthenticated) {
-    return null; // Редирект уже сработает через useEffect
+    return null;
   }
 
   return (
     <div className="flex flex-col min-h-screen bg-[#0E0D10]">
-      <CategoriesList />
-      <ForYouList />
-      {/* Остальной контент */}
+      <CategoriesList dataLoaded={dataLoaded} setDataLoaded={setDataLoaded} />
+      <ForYouList dataLoaded={dataLoaded} />
     </div>
   );
 }
