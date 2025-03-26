@@ -52,7 +52,7 @@ export default function AllCategories() {
           onClick={() => router.back()}
           className="w-[4.17vw] cursor-pointer"
         />
-        <p className="text-[#EFEDF6] text-[6.25vw] font-montserrat font-semibold leading-normal">
+        <p className="text-[#EFEDF6] text-[6.25vw] font-semibold leading-normal  [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight ">
           Выбери категорию
         </p>
         <img

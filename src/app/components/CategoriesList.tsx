@@ -36,7 +36,7 @@ const CategoriesList: React.FC = () => {
   return (
     <div className="container mx-auto p-2">
       <div className="w-full flex mb-[3.125vw] items-center justify-between">
-        <p className="text-[#EFEDF6] text-[6.25vw] font-montserrat font-semibold leading-normal">
+        <p className="text-[#EFEDF6] text-[6.25vw] leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight font-semibold ">
           Категории
         </p>
         

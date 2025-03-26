@@ -47,14 +47,14 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, isLoading = false
               alt=""
               className="w-[3.125vw] h-[3.125vw]"
             />
-            <span className="text-[#EFEDF6] text-[4.1667vw] text-base inter-tight-semibold font-semibold leading-normal">
+            <span className="text-[#EFEDF6] text-[4.1667vw] leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight font-semibold">
               Новое
             </span>
           </span>
         )}
       </div>
       <div className="flex justify-center items-center mt-0.5 max-w-[22.14vw]">
-        <p className="text-[#EFEDF6] text-[3.6458vw] text-center w-full break-words whitespace-normal normal-case font-medium leading-normal font-montserrat">
+        <p className="text-[#EFEDF6] text-[3.6458vw] text-center w-full break-words whitespace-normal normal-case leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight font-medium ">
           {category.name}
         </p>
       </div>

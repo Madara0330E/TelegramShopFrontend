@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-
+import "../globals.css";
 interface Product {
   id: string;
   name: string;
@@ -64,7 +64,7 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, isLoading = false })
                 alt="Иконка популярного" 
                 className="w-[1.875vw] h-[3.125vw]"
               />
-              <span className="text-[#EFEDF6] text-[4.167vw] font-semibold leading-none">
+              <span className="text-[#EFEDF6] text-[4.167vw] leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight font-semibold">
                 Популярный
               </span>
             </div>
@@ -104,7 +104,7 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, isLoading = false })
                 className="w-[3vw] h-[3vw]"
               />
             </span>
-            <span className="text-[#EFEDF6] font-montserrat text-[3.5vw] font-semibold leading-normal">
+            <span className="text-[#EFEDF6] text-[3.5vw] font-semibold leading-normal  [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight ">
               Скидка {product.discountPercent}%
             </span>
           </div>
@@ -112,19 +112,19 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, isLoading = false })
       </div>
       
       <div className="flex flex-col gap-1 mt-2">
-        <p className="text-[#EFEDF6] font-montserrat text-[4vw] font-bold leading-none">
+        <p className="text-[#EFEDF6] text-[4vw] font-bold leading-none  font-inter-tight ">
           {product.name}
         </p>
-        <div className="font-montserrat text-[#EFEDF6] opacity-50 text-[3.5vw] font-medium leading-none">
+        <div className=" text-[#EFEDF6] opacity-50 text-[3.5vw] font-medium leading-none font-inter-tight ">
           {product.categoryName}
         </div>
 
         <div className="flex items-center">
-          <span className="text-[#5BDB41] font-montserrat text-[4vw] font-semibold leading-none">
+          <span className="text-[#5BDB41]  text-[4vw] font-semibold leading-none font-inter-tight ">
             {formatPrice(product.price)} ₽
           </span>
           {product.originalPrice && (
-            <span className="ml-2 mb-[1vw] font-montserrat text-[2.5vw] font-semibold leading-none line-through opacity-50">
+            <span className="ml-2 mb-[1vw] text-[2.5vw] font-semibold leading-none line-through opacity-50  font-inter-tight ">
               {formatPrice(product.originalPrice)} ₽
             </span>
           )}

@@ -14,11 +14,28 @@ export default {
           dark: "#18172E",
         },
       },
-      // Добавляем кастомный шрифт
       fontFamily: {
-        montserrat: ['Montserrat Alternates', 'sans-serif'],
+        'inter-tight': ['Inter Tight', 'sans-serif'],
+      },
+      // Добавляем поддержку font-feature-settings
+      fontFeatureSettings: {
+        'inter-tight-features': '"salt" on, "ss03" on, "cv01" on',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // Плагин для добавления утилит font-feature-settings
+    function({ addUtilities, theme }) {
+      const newUtilities = {
+        '.font-features-inter': {
+          fontFeatureSettings: theme('fontFeatureSettings.inter-tight-features'),
+          // Альтернативные свойства для лучшей поддержки
+          fontVariant: 'none',
+          fontVariantAlternates: 'styleset(ss03), character-variant(cv01)',
+          fontVariantLigatures: 'salt',
+        },
+      }
+      addUtilities(newUtilities)
+    }
+  ],
 }

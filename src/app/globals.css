@@ -19,42 +19,58 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Regular */
 @font-face {
-  font-family: 'MontserratAlternates Thin Italic';
-  src: url('/fonts/MontserratAlternates-ThinItalic.ttf') format('truetype');
-  font-weight: 100;
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-Italic.ttf') format('truetype');
+  font-weight: 400;
   font-style: italic;
+  font-display: swap;
 }
 
 /* Thin */
 @font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/fonts/MontserratAlternates-Thin.ttf') format('truetype');
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-Thin.ttf') format('truetype');
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/fonts/MontserratAlternates-ThinItalic.ttf') format('truetype');
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-ThinItalic.ttf') format('truetype');
   font-weight: 100;
   font-style: italic;
   font-display: swap;
 }
 
-/* ExtraLight */
+/* Extra Light */
 @font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/fonts/MontserratAlternates-ExtraLight.ttf') format('truetype');
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-ExtraLight.ttf') format('truetype');
   font-weight: 200;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/fonts/MontserratAlternates-ExtraLightItalic.ttf') format('truetype');
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-ExtraLightItalic.ttf') format('truetype');
   font-weight: 200;
   font-style: italic;
   font-display: swap;
@@ -62,67 +78,50 @@ body {
 
 /* Light */
 @font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/fonts/MontserratAlternates-Light.ttf') format('truetype');
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-Light.ttf') format('truetype');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/fonts/MontserratAlternates-LightItalic.ttf') format('truetype');
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-LightItalic.ttf') format('truetype');
   font-weight: 300;
-  font-style: italic;
-  font-display: swap;
-}
-
-/* Regular */
-@font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/fonts/MontserratAlternates-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/fonts/MontserratAlternates-Italic.ttf') format('truetype');
-  font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 
 /* Medium */
 @font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/fonts/MontserratAlternates-Medium.ttf') format('truetype');
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/fonts/MontserratAlternates-MediumItalic.ttf') format('truetype');
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-MediumItalic.ttf') format('truetype');
   font-weight: 500;
   font-style: italic;
   font-display: swap;
 }
 
-/* SemiBold */
+/* Semi Bold */
 @font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/fonts/MontserratAlternates-SemiBold.ttf') format('truetype');
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-SemiBold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/fonts/MontserratAlternates-SemiBoldItalic.ttf') format('truetype');
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-SemiBoldItalic.ttf') format('truetype');
   font-weight: 600;
   font-style: italic;
   font-display: swap;
@@ -130,33 +129,33 @@ body {
 
 /* Bold */
 @font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/fonts/MontserratAlternates-Bold.ttf') format('truetype');
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/fonts/MontserratAlternates-BoldItalic.ttf') format('truetype');
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-BoldItalic.ttf') format('truetype');
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 
-/* ExtraBold */
+/* Extra Bold */
 @font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/fonts/MontserratAlternates-ExtraBold.ttf') format('truetype');
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-ExtraBold.ttf') format('truetype');
   font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/fonts/MontserratAlternates-ExtraBoldItalic.ttf') format('truetype');
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-ExtraBoldItalic.ttf') format('truetype');
   font-weight: 800;
   font-style: italic;
   font-display: swap;
@@ -164,17 +163,20 @@ body {
 
 /* Black */
 @font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/fonts/MontserratAlternates-Black.ttf') format('truetype');
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-Black.ttf') format('truetype');
   font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Montserrat Alternates';
-  src: url('/fonts/MontserratAlternates-BlackItalic.ttf') format('truetype');
+  font-family: 'Inter Tight';
+  src: url('/fonts/InterTight-BlackItalic.ttf') format('truetype');
   font-weight: 900;
   font-style: italic;
   font-display: swap;
+}
+.inter-tight-features {
+  font-feature-settings: 'salt' on, 'ss03' on, 'cv01' on;
 }
