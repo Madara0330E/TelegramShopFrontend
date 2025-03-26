@@ -8,16 +8,14 @@ const ForYouList: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const hasFetched = useRef(false);
+  const [visibleProducts, setVisibleProducts] = useState<number>(4); // Начальное количество видимых товаров
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (hasFetched.current) return;
-    hasFetched.current = true;
-
     const getData = async () => {
       try {
         setLoading(true);
-        
         const productsResponse = await fetch('https://shop.chasman.engineer/api/v1/products');
 
         if (!productsResponse.ok) {
@@ -35,6 +33,38 @@ const ForYouList: React.FC = () => {
 
     getData();
   }, []);
+
+  useEffect(() => {
+    if (loading || products.length === 0) return;
+
+    const options = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.1,
+    };
+
+    observerRef.current = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Увеличиваем количество видимых товаров
+          setVisibleProducts((prev) => {
+            const newValue = prev + 4;
+            return newValue > products.length ? products.length : newValue;
+          });
+        }
+      });
+    }, options);
+
+    if (loadMoreRef.current) {
+      observerRef.current.observe(loadMoreRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [loading, products]);
 
   if (error) {
     return <div className="text-center py-8 text-red-500">Error: {error}</div>;
@@ -58,22 +88,32 @@ const ForYouList: React.FC = () => {
 
       {loading ? (
         <div className="grid grid-cols-2 gap-[2.08vw]">
-          {[...Array(8)].map((_, index) => (
-            <ProductItem key={`skeleton-${index}`}  />
+          {[...Array(4)].map((_, index) => (
+            <ProductItem key={`skeleton-${index}`} />
           ))}
         </div>
       ) : products.length === 0 ? (
         <div className="text-center py-8">Товары не найдены</div>
       ) : (
-        <div className="grid grid-cols-2 gap-[2.08vw]">
-          {products.slice(0, 8).map((product) => (
-            <ProductItem 
-              key={product.id} 
-              product={product} 
-             
-            />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-2 gap-[2.08vw]">
+            {products.slice(0, visibleProducts).map((product) => (
+              <ProductItem 
+                key={product.id} 
+                product={product} 
+              />
+            ))}
+          </div>
+          {/* Элемент для отслеживания видимости */}
+          <div ref={loadMoreRef} style={{ height: "1px" }} />
+          {visibleProducts < products.length && (
+            <div className="grid grid-cols-2 gap-[2.08vw]">
+              {[...Array(Math.min(4, products.length - visibleProducts))].map((_, index) => (
+                <ProductItem key={`skeleton-${index}`} />
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

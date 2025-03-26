@@ -57,14 +57,14 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, isLoading = false })
               style={{
                 background: "linear-gradient(90deg, #EC403A 0%, #E2964E 100%)",
               }}
-              className="flex justify-center py-1 px-2 items-center h-[7.031vw] gap-1 w-[32.292vw] rounded-[6px]"
+              className="flex justify-center py-1 px-2 items-center h-[7.031vw] gap-[1.042vw] w-[32.292vw] rounded-[6px]"
             >
               <img 
                 src="img/ForYou/Exclude.svg" 
                 alt="Иконка популярного" 
                 className="w-[1.875vw] h-[3.125vw]"
               />
-              <span className="text-[#EFEDF6] font-montserrat text-[4.167vw] font-semibold leading-none">
+              <span className="text-[#EFEDF6] text-[4.167vw] font-semibold leading-none">
                 Популярный
               </span>
             </div>
