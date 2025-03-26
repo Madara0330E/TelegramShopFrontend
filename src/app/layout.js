@@ -35,7 +35,7 @@ export default function RootLayout({ children }) {
             </div>
           </header>
           
-          <main className="flex-1 bg-[#0E0D10] min-h-screen">
+          <main className=" bg-[#0E0D10] ">
             {children}
           </main>
         </AuthProvider>
