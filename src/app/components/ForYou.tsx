@@ -51,7 +51,7 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, isLoading = false })
         />
 
         {/* Бейджи */}
-        <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
+        <div className="absolute top-2 left-2 flex flex-col gap-[1.042vw] z-10">
           {product.isPopular && (
             <div
               style={{
