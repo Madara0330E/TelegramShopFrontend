@@ -21,7 +21,10 @@ interface ProductItemProps {
   isLoading?: boolean;
 }
 
-const ProductItem: React.FC<ProductItemProps> = ({ product, isLoading = false }) => {
+const ProductItem: React.FC<ProductItemProps> = ({
+  product,
+  isLoading = false,
+}) => {
   if (isLoading || !product) {
     return (
       <div className="rounded-lg shadow-md overflow-hidden w-full animate-pulse">
@@ -59,9 +62,9 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, isLoading = false })
               }}
               className="flex justify-center py-1 px-2 items-center h-[7.031vw] gap-[1.042vw] w-[32.292vw] rounded-[6px]"
             >
-              <img 
-                src="img/ForYou/Exclude.svg" 
-                alt="Иконка популярного" 
+              <img
+                src="img/ForYou/Exclude.svg"
+                alt="Иконка популярного"
                 className="w-[1.875vw] h-[3.125vw]"
               />
               <span className="text-[#EFEDF6] text-[4.167vw] leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight font-semibold">
@@ -77,9 +80,9 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, isLoading = false })
               }}
               className="flex justify-center py-1 px-2 h-[7.031vw] items-center w-[20.573vw] gap-1 rounded-[6px]"
             >
-              <img 
-                src="img/CategoryCard/SoftStar.svg" 
-                alt="Иконка нового" 
+              <img
+                src="img/CategoryCard/SoftStar.svg"
+                alt="Иконка нового"
                 className="w-[3.125vw] h-[3.125vw]"
               />
               <span className="text-[#EFEDF6] font-montserrat text-[4.167vw] font-semibold leading-none">
@@ -98,19 +101,19 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, isLoading = false })
             className="flex px-2 py-1 justify-center items-center gap-1 rounded-[6px] absolute left-2 bottom-2"
           >
             <span>
-              <img 
-                src="img/ForYou/notes.svg" 
-                alt="" 
+              <img
+                src="img/ForYou/notes.svg"
+                alt=""
                 className="w-[3vw] h-[3vw]"
               />
             </span>
-            <span className="text-[#EFEDF6] text-[3.5vw] font-semibold leading-normal  [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight ">
-              Скидка {product.discountPercent}%
+            <span className="text-[#EFEDF6] text-[3.5vw] font-semibold leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight">
+              Скидка {Math.round(product.discountPercent)}%
             </span>
           </div>
         )}
       </div>
-      
+
       <div className="flex flex-col gap-1 mt-2">
         <p className="text-[#EFEDF6] text-[4vw] font-bold leading-none  font-inter-tight ">
           {product.name}
