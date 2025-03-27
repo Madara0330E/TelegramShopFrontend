@@ -5,6 +5,7 @@ import CategoriesList from "./components/CategoriesList";
 import { useAuth } from "./context/AuthContext";
 import "./globals.css";
 import ForYouList from "./components/ForYouList";
+import BannerSlider from "./components/BannerSlider";
 
 export default function Home() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -32,6 +33,10 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#0E0D10]">
+       <BannerSlider 
+      apiUrl="https://shop.chasman.engineer/api/v1/banners"
+      autoPlayInterval={10000}
+    />
       <CategoriesList dataLoaded={dataLoaded} setDataLoaded={setDataLoaded} />
       <ForYouList dataLoaded={dataLoaded} />
     </div>
