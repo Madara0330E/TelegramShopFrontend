@@ -31,12 +31,7 @@ export default function Header() {
                 alt="Purchases"
             />
           </div>
-          <button
-              onClick={() => window.open('https://t.me/$Sg_yWQGSOFN6BgAAu8UuI9FjLwQ', '_blank')}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-          >
-            Открыть Telegram
-          </button>
+         
           <div className="flex w-[48px] h-[48px] justify-center items-center">
             {isLoading ? (
                 <div className="w-12 h-12 rounded-full bg-gray-700 animate-pulse"></div>
