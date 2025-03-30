@@ -129,11 +129,11 @@ const ProductItem: React.FC<ProductItemProps> = ({
 
         <div className="flex items-center mt-1">
           <span className="text-[#5BDB41] text-[4.167vw] font-semibold leading-none font-inter-tight">
-            {formatPrice(product.price)} ₽
+            {formatPrice(product.price)}₽
           </span>
           {product.originalPrice && (
             <span className="ml-[1.042vw] mb-[1.042vw] text-[3.125vw] font-semibold leading-none line-through opacity-50 font-inter-tight">
-              {formatPrice(product.originalPrice)} ₽
+              {formatPrice(product.originalPrice)}₽
             </span>
           )}
         </div>

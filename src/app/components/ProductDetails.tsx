@@ -29,6 +29,13 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
     return new Intl.NumberFormat("ru-RU").format(price);
   };
 
+  // Функция для ограничения текста (оставлена для использования в других местах)
+  const truncateText = (text: string, maxLength: number = 20) => {
+    return text.length > maxLength
+      ? `${text.substring(0, maxLength)}...`
+      : text;
+  };
+
   const handleBuyClick = () => {
     setIsLoading(true);
     console.log("Buying product:", product.id);
@@ -62,7 +69,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
           className="w-[4.17vw] cursor-pointer"
         />
         <p className="text-[#EFEDF6] text-[6.25vw] font-semibold leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight">
-          {product.name}
+          {truncateText(product.name)}
         </p>
         <img
           src="../img/CategoryCard/Lupa.svg"
@@ -89,32 +96,24 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
         <div className="flex flex-col">
           <div className="p-2 pt-3 pb-0">
             <p className="text-[#EFEDF6] text-[6.25vw] font-bold leading-none font-inter-tight line-clamp-2">
-              {product.name}
+              {product.name} {/* Здесь убрано ограничение по символам */}
             </p>
           </div>
 
-          {/* Цена и рейтинг */}
+          {/* Остальной код без изменений */}
           <div className="flex justify-between items-center p-2 pb-0">
-            <span
-              className={`text-[${
-                product.originalPrice ? "#5BDB41" : "#EFEDF6"
-              }] text-[5.208vw] font-semibold leading-none font-inter-tight`}
-            >
-              {formatPrice(product.price)} ₽
-            </span>
-            <div className="flex items-center gap-[1.042vw] reiting">
-              <p className="text-[#EFEDF6] text-[5.208vwvw] leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight font-medium">
-                {product.rating.toFixed(1)}
-              </p>
-              <img
-                className="w-[3.646vw] h-[3.385vw]"
-                src="../img/ProductDetails/Star.svg"
-                alt="Рейтинг"
-              />
+            <div className="flex items-center mt-1">
+              <span className="text-[#5BDB41] text-[5.208vw] font-semibold leading-none font-inter-tight">
+                {formatPrice(product.price)}₽
+              </span>
+              {product.originalPrice && (
+                <span className="ml-[1.042vw] mb-[1.042vw] text-[3.646vw] font-semibold leading-none line-through opacity-50 font-inter-tight">
+                  {formatPrice(product.originalPrice)}₽
+                </span>
+              )}
             </div>
           </div>
 
-          {/* Описание с кнопкой "Читать..." */}
           <div className="p-2 w-full max-w-[95.833vw] relative pt-3 pb-3">
             <p
               ref={descriptionRef}
@@ -142,7 +141,6 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
           </div>
         </div>
       </div>
-   
     </div>
   );
 };

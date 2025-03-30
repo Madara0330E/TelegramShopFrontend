@@ -16,7 +16,10 @@ interface ProductReviewsProps {
   productRating: number;
 }
 
-const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews, productRating }) => {
+const ProductReviews: React.FC<ProductReviewsProps> = ({
+  reviews,
+  productRating,
+}) => {
   // Сбрасываем скролл при загрузке компонента
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -24,6 +27,12 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews, productRating 
 
   // Ограничиваем количество отображаемых отзывов до 3
   const displayedReviews = reviews.length > 3 ? reviews.slice(0, 3) : reviews;
+
+  // Функция для форматирования рейтинга
+  const formatRating = (rating: number) => {
+    const formattedRating = rating.toFixed(1);
+    return formattedRating === "0.0" ? "-.-" : formattedRating;
+  };
 
   return (
     <div className="mt-3 p-2 mb-0">
@@ -37,11 +46,11 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews, productRating 
             {reviews.length}
           </sup>
         </div>
-        
+
         <div className="flex items-center gap-[3.125vw]">
           <div className="flex items-center gap-[1.042vw]">
-            <p className="text-[#EFEDF6] text-[4.167vw] font-semibold leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight">
-              {productRating.toFixed(1)}
+            <p className="text-[#EFEDF6] text-[5.208vw] font-semibold leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight">
+              {formatRating(productRating)}
             </p>
             <img
               src="../img/ProductReviews/Star.svg"
@@ -65,7 +74,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews, productRating 
       {displayedReviews.length > 0 ? (
         <div className="flex flex-col gap-[2.083vw]">
           {displayedReviews.map((review) => (
-            <div 
+            <div
               key={review.id}
               className="w-full p-3 rounded-[12px] bg-[#2A282E]"
             >
@@ -97,17 +106,17 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews, productRating 
                       />
                     )}
                   </div>
-                  
+
                   {/* Имя пользователя */}
                   <p className="text-[#EFEDF6] text-[4.167vw] font-semibold leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight">
                     {review.name}
                   </p>
                 </div>
-                
+
                 {/* Рейтинг пользователя */}
                 <div className="flex items-center gap-[1.042vw]">
-                  <p className="text-[#EFEDF6] text-[4.167vw] font-semibold leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight">
-                    {review.rating.toFixed(1)}
+                  <p className="text-[#EFEDF6] text-[5.208vw] font-semibold leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight">
+                    {formatRating(review.rating)}
                   </p>
                   <img
                     src="../img/ProductReviews/Star.svg"
@@ -118,7 +127,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews, productRating 
                   />
                 </div>
               </div>
-              
+
               {/* Текст отзыва */}
               <div className="mb-[1.5vw]">
                 <p className="text-[#EFEDF6] text-[4.167vw] font-medium leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight">
