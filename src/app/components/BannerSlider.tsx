@@ -41,7 +41,7 @@ const BannerSlider = ({ apiUrl }: BannerSliderProps) => {
   if (!banners.length) return <div className="w-[95.833vw] h-[31.25vw] flex items-center justify-center">No banners available</div>;
 
   return (
-    <div className="w-[95.833vw] p-2 pb-4 pt-4 mx-auto">
+    <div className="w-full p-2 pb-4 pt-4 mx-auto">
       <Swiper
         modules={[Autoplay]}
         spaceBetween={0} // Убрали промежутки между слайдами

@@ -71,7 +71,7 @@ const ForYouList: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto p-2">
+    <div className="p-2">
       <div className="w-full flex mb-[3.125vw] items-center justify-between">
         <p className="text-[#EFEDF6] text-[6.25vw] font-montserrat font-semibold leading-normal">
           Для вас
@@ -79,7 +79,7 @@ const ForYouList: React.FC = () => {
         
         <Link href="/all-products">
           <img
-            src="img/CategoryCard/Arrow.svg"
+            src="/img/CategoryCard/Arrow.svg"
             alt="Перейти"
             className="w-[4.17vw] cursor-pointer"
           />

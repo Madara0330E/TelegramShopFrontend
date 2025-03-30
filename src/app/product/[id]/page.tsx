@@ -1,6 +1,8 @@
 import React from "react";
 import ProductDetails from "../../components/ProductDetails";
 import { notFound } from "next/navigation";
+import ProductReviews from '../../components/ProductReviews';
+import ForYouList from "../../components/ForYouList";
 
 interface Product {
   id: string;
@@ -12,7 +14,14 @@ interface Product {
   imgUrls: string[];
   inStock: boolean;
   rating: number;
-  reviews: any[];
+  reviews: {
+    id: string;
+    name: string;
+    avatarUrl: string;
+    comment: string;
+    rating: number;
+    createdAtUtc: string;
+  }[];
 }
 
 async function getProduct(id: string): Promise<Product | null> {
@@ -28,8 +37,13 @@ async function getProduct(id: string): Promise<Product | null> {
 
     const product = await res.json();
 
+    // Обеспечиваем правильную структуру данных, если они отсутствуют
     if (!product.imgUrls || !Array.isArray(product.imgUrls)) {
       product.imgUrls = [];
+    }
+
+    if (!product.reviews || !Array.isArray(product.reviews)) {
+      product.reviews = [];
     }
 
     return product;
@@ -53,6 +67,11 @@ export default async function ProductPage({ params }: { params?: { id?: string }
   return (
     <main className="min-h-screen">
       <ProductDetails product={product} />
+      <ProductReviews 
+        reviews={product.reviews} 
+        productRating={product.rating} 
+      />
+      <ForYouList />
     </main>
   );
 }

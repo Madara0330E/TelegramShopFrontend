@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 interface ProductDetailsProps {
   product: {
@@ -26,12 +26,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const descriptionRef = useRef<HTMLParagraphElement>(null);
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('ru-RU').format(price);
+    return new Intl.NumberFormat("ru-RU").format(price);
   };
 
   const handleBuyClick = () => {
     setIsLoading(true);
-    console.log('Buying product:', product.id);
+    console.log("Buying product:", product.id);
     setTimeout(() => setIsLoading(false), 1000);
   };
 
@@ -41,18 +41,19 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
         const element = descriptionRef.current;
         const lineHeight = parseInt(getComputedStyle(element).lineHeight) || 24;
         const maxHeight = lineHeight * 2;
-        
+
         setShowReadMore(element.scrollHeight > maxHeight);
       }
     };
 
     checkTextOverflow();
-    window.addEventListener('resize', checkTextOverflow);
-    return () => window.removeEventListener('resize', checkTextOverflow);
+    window.addEventListener("resize", checkTextOverflow);
+    return () => window.removeEventListener("resize", checkTextOverflow);
   }, [product.description]);
 
   return (
     <div className="max-w-6xl mx-auto">
+      {/* Верхняя панель с кнопками "Назад" и "Поиск" */}
       <div className="w-full flex mb-[3.125vw] items-center justify-between p-2">
         <img
           src="../img/CategoryCard/ArrowLeft.svg"
@@ -70,56 +71,78 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
         />
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8">
-        <div className="w-full h-[100vw]">
+      {/* Основной контент страницы товара */}
+      <div className="grid">
+        {/* Изображение товара */}
+        <div className="w-full max-w-[100vw] h-[100vw]">
           <img
-            src={product.imgUrls[0] || '/placeholder-product.png'}
+            src={product.imgUrls[0] || "/placeholder-product.png"}
             alt={product.name}
             className="w-full h-full object-cover"
             onError={(e) => {
-              (e.target as HTMLImageElement).src = '/placeholder-product.png';
+              (e.target as HTMLImageElement).src = "/placeholder-product.png";
             }}
           />
         </div>
 
+        {/* Описание товара */}
         <div className="flex flex-col">
-          <div className="p-2">
+          <div className="p-2 pt-3 pb-0">
             <p className="text-[#EFEDF6] text-[6.25vw] font-bold leading-none font-inter-tight line-clamp-2">
               {product.name}
             </p>
           </div>
 
-          <div className="flex justify-between items-center p-2">
-            <span className={`text-[${product.originalPrice ? '#5BDB41' : '#EFEDF6'}] text-[5.208vw] font-semibold leading-none font-inter-tight`}>
+          {/* Цена и рейтинг */}
+          <div className="flex justify-between items-center p-2 pb-0">
+            <span
+              className={`text-[${
+                product.originalPrice ? "#5BDB41" : "#EFEDF6"
+              }] text-[5.208vw] font-semibold leading-none font-inter-tight`}
+            >
               {formatPrice(product.price)} ₽
             </span>
             <div className="flex items-center gap-[1.042vw] reiting">
-              <p className="text-[#EFEDF6] text-[5.208vwvw] leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight font-medium">{product.rating.toFixed(1)}</p>
-              <img className='w-[3.646vw] h-[3.385vw]' src="../img/ProductDetails/Star.svg" alt="" />
+              <p className="text-[#EFEDF6] text-[5.208vwvw] leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight font-medium">
+                {product.rating.toFixed(1)}
+              </p>
+              <img
+                className="w-[3.646vw] h-[3.385vw]"
+                src="../img/ProductDetails/Star.svg"
+                alt="Рейтинг"
+              />
             </div>
           </div>
 
-          <div className="p-2 relative">
+          {/* Описание с кнопкой "Читать..." */}
+          <div className="p-2 w-full max-w-[95.833vw] relative pt-3 pb-3">
             <p
               ref={descriptionRef}
-              className={`whitespace-pre-line transition-all duration-200 text-[#EFEDF6] text-[3.6458vw] w-full leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight font-medium ${
-                !isExpanded && showReadMore ? 'line-clamp-2' : ''
+              className={`break-all transition-all duration-200 text-[#EFEDF6] text-[3.6458vw] leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight font-semibold ${
+                !isExpanded && showReadMore ? "line-clamp-2" : ""
               }`}
-              style={{ lineHeight: '1.5' }}
+              style={{
+                lineHeight: "1.5",
+                wordWrap: "break-word",
+                overflowWrap: "break-word",
+              }}
             >
-              {product.description || 'Описание отсутствует'}
+              {product.description || "Описание отсутствует"}
             </p>
             {showReadMore && (
-              <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="mt-1 focus:outline-none absolute bottom-0 right-0 text-[#EFEDF6] text-[3.6458vw] w-full leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight font-medium"
-              >
-                {isExpanded ? 'Свернуть' : 'Читать...'}
-              </button>
+              <div className="text-right ">
+                <button
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  className="focus:outline-none text-[#7E7D83] text-[3.6458vw] leading-normal font-inter-tight font-semibold"
+                >
+                  {isExpanded ? "Свернуть" : "Читать..."}
+                </button>
+              </div>
             )}
           </div>
         </div>
       </div>
+   
     </div>
   );
 };
