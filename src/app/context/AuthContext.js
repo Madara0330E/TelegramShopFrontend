@@ -2,13 +2,9 @@
 
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 
-// Создаём контекст аутентификации
 const AuthContext = createContext();
 
-
-
 export const AuthProvider = ({ children }) => {
-  // Состояния
   const [authToken, setAuthToken] = useState(null);
   const [tgUser, setTgUser] = useState(null);
   const [apiUser, setApiUser] = useState(null);
@@ -16,102 +12,141 @@ export const AuthProvider = ({ children }) => {
   const [isWebAppReady, setIsWebAppReady] = useState(false);
   const [authError, setAuthError] = useState(null);
 
-  // Функция для получения данных пользователя
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://shop.chasman.engineer/api/v1";
+
   const fetchUserData = useCallback(async (token) => {
+    setIsLoading(true);
+    setAuthError(null);
+    
     try {
-      console.log("Fetching user data with token:", token); // Отладочная информация
+      console.log("Starting to fetch user data with token:", token);
       
-      const response = await fetch("https://shop.chasman.engineer/api/v1/users/@me", {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+      const response = await fetch(`${API_BASE_URL}/users/@me`, {
         method: "GET",
         headers: {
-          "accept": "*/*",
+          "accept": "application/json",
           "Authorization": `Bearer ${token}`,
           "Cache-Control": "no-cache",
         },
-        credentials: "include", // Для работы с куками, если требуется
+        signal: controller.signal,
+        credentials: "include",
       });
-      
-      console.log("User data response status:", response.status); // Логируем статус
-      
+
+      clearTimeout(timeoutId);
+
+      console.log("User data fetch response status:", response.status);
+
       if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
+        const errorData = await response.json().catch(() => ({
+          message: `HTTP error! status: ${response.status}`
+        }));
         console.error("Error response data:", errorData);
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(errorData.message || "Failed to fetch user data");
       }
-      
+
       const userData = await response.json();
-      console.log("Received user data:", userData); // Логируем полученные данные
-      
+      console.log("Successfully fetched user data:", userData);
+
       setApiUser(userData);
       return true;
     } catch (error) {
-      console.error("Failed to fetch user data:", error);
+      console.error("Error in fetchUserData:", {
+        name: error.name,
+        message: error.message,
+        stack: error.stack
+      });
+      
       setAuthError(error.message);
       return false;
+    } finally {
+      setIsLoading(false);
     }
-  }, []);
+  }, [API_BASE_URL]);
 
-  // Функция для валидации Telegram авторизации
   const validateTelegramAuth = useCallback(async (initData) => {
+    setIsLoading(true);
+    setAuthError(null);
+    
     try {
-      console.log("Validating Telegram auth with initData:", initData); // Отладочная информация
-      
-      const response = await fetch("https://shop.chasman.engineer/api/v1/auth/validate-init", {
+      console.log("Validating Telegram auth with initData:", initData);
+
+      if (!initData || typeof initData !== "string" || !initData.includes("hash=")) {
+        throw new Error("Invalid Telegram initData format");
+      }
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+      const response = await fetch(`${API_BASE_URL}/auth/validate-init`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "accept": "*/*",
+          "accept": "application/json",
         },
         body: JSON.stringify({ 
-          initData: initData,
-          // Дополнительные параметры, если нужны:
+          initData,
           platform: "web",
           version: "1.0",
         }),
+        signal: controller.signal,
       });
-      
-      console.log("Validation response status:", response.status); // Логируем статус
-      
+
+      clearTimeout(timeoutId);
+
+      console.log("Telegram auth validation response status:", response.status);
+
       if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
+        const errorData = await response.json().catch(() => ({
+          message: `HTTP error! status: ${response.status}`
+        }));
         console.error("Error response data:", errorData);
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(errorData.message || "Telegram auth validation failed");
       }
 
       const data = await response.json();
-      console.log("Received auth data:", data); // Логируем полученные данные
-      
-      if (data.authToken) {
-        // Сохраняем токен в состоянии и localStorage
-        setAuthToken(data.authToken);
-        localStorage.setItem('authToken', data.authToken);
-        
-        // Получаем данные пользователя
-        const userFetchSuccess = await fetchUserData(data.authToken);
-        
-        // Если есть данные пользователя от Telegram, сохраняем их
-        if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
-          setTgUser(window.Telegram.WebApp.initDataUnsafe.user);
-        }
-        
-        return userFetchSuccess;
+      console.log("Telegram auth response data:", data);
+
+      if (!data.authToken) {
+        throw new Error("No auth token received from server");
       }
+
+      setAuthToken(data.authToken);
+      localStorage.setItem('authToken', data.authToken);
+      sessionStorage.setItem('tgAuthData', JSON.stringify(data));
+
+      const userFetchSuccess = await fetchUserData(data.authToken);
       
-      return false;
+      if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
+        setTgUser(window.Telegram.WebApp.initDataUnsafe.user);
+      }
+
+      return userFetchSuccess;
     } catch (error) {
-      console.error("Auth validation error:", error);
+      console.error("Error in validateTelegramAuth:", {
+        name: error.name,
+        message: error.message,
+        stack: error.stack
+      });
+      
       setAuthError(error.message);
       return false;
+    } finally {
+      setIsLoading(false);
     }
-  }, [fetchUserData]);
+  }, [API_BASE_URL, fetchUserData]);
 
-  // Инициализация Telegram WebApp
   const initTelegramWebApp = useCallback(() => {
     try {
       const webApp = window.Telegram.WebApp;
-      console.log("Initializing Telegram WebApp:", webApp); // Отладочная информация
+      console.log("Initializing Telegram WebApp:", webApp);
 
-      // Устанавливаем CSS-переменные для viewport
+      if (!webApp) {
+        throw new Error("Telegram WebApp not available");
+      }
+
       document.documentElement.style.setProperty(
         '--tg-viewport-height', 
         `${webApp.viewportHeight}px`
@@ -120,101 +155,108 @@ export const AuthProvider = ({ children }) => {
         '--tg-viewport-stable-height', 
         `${webApp.viewportStableHeight}px`
       );
-      
-      // Инициализируем WebApp
+
       webApp.ready();
-      
-      // Если есть данные для авторизации
+      console.log("Telegram WebApp ready");
+
       if (webApp.initData) {
-        console.log("Telegram initData available:", webApp.initData);
+        console.log("Found Telegram initData, starting validation");
         setIsLoading(true);
         setAuthError(null);
         
         validateTelegramAuth(webApp.initData)
-          .finally(() => {
-            setIsLoading(false);
+          .catch(error => {
+            console.error("Telegram auth validation error:", error);
           });
       } else {
         console.log("No Telegram initData available");
-        setIsLoading(false);
+        const savedToken = localStorage.getItem('authToken');
+        if (savedToken) {
+          console.log("Found saved token, fetching user data");
+          fetchUserData(savedToken).catch(error => {
+            console.error("Failed to fetch user with saved token:", error);
+          });
+        }
       }
-      
+
       setIsWebAppReady(true);
     } catch (error) {
-      console.error("Error initializing Telegram WebApp:", error);
+      console.error("Error initializing Telegram WebApp:", {
+        name: error.name,
+        message: error.message,
+        stack: error.stack
+      });
+      
+      setAuthError(error.message);
       setIsLoading(false);
-      setAuthError("Failed to initialize Telegram WebApp");
     }
-  }, [validateTelegramAuth]);
+  }, [validateTelegramAuth, fetchUserData]);
 
-  // Эффект для загрузки Telegram WebApp и проверки аутентификации
   useEffect(() => {
     const initializeAuth = async () => {
-      // Проверяем, может WebApp уже загружен
-      if (window.Telegram?.WebApp) {
-        initTelegramWebApp();
-        return;
-      }
-
-      // Если нет, загружаем скрипт
-      const script = document.createElement("script");
-      script.src = "https://telegram.org/js/telegram-web-app.js";
-      script.async = true;
-      
-      script.onload = () => {
+      try {
         if (window.Telegram?.WebApp) {
           initTelegramWebApp();
-        } else {
-          console.error("Telegram WebApp script loaded but window.Telegram not available");
-          setIsLoading(false);
-          setAuthError("Failed to load Telegram WebApp");
+          return;
         }
-      };
-      
-      script.onerror = () => {
-        console.error("Failed to load Telegram WebApp script");
-        setIsLoading(false);
-        setAuthError("Failed to load Telegram WebApp");
-      };
-      
-      document.body.appendChild(script);
 
-      // Проверяем сохранённый токен, если Telegram не загружен
-      const savedToken = localStorage.getItem('authToken');
-      if (savedToken && !window.Telegram?.WebApp) {
-        console.log("Found saved token, trying to fetch user data");
-        setIsLoading(true);
-        fetchUserData(savedToken)
-          .then((success) => {
-            if (!success) {
-              localStorage.removeItem('authToken');
-              setAuthToken(null);
-            }
-          })
-          .finally(() => setIsLoading(false));
-      } else {
+        console.log("Loading Telegram WebApp script");
+        const script = document.createElement("script");
+        script.src = "https://telegram.org/js/telegram-web-app.js";
+        script.async = true;
+        script.onload = () => {
+          console.log("Telegram WebApp script loaded");
+          if (window.Telegram?.WebApp) {
+            initTelegramWebApp();
+          } else {
+            console.error("Telegram WebApp not available after script load");
+            setAuthError("Failed to initialize Telegram WebApp");
+            setIsLoading(false);
+          }
+        };
+        script.onerror = (error) => {
+          console.error("Failed to load Telegram WebApp script:", error);
+          setAuthError("Failed to load Telegram WebApp");
+          setIsLoading(false);
+        };
+        document.body.appendChild(script);
+
+        return () => {
+          if (script.parentNode) {
+            document.body.removeChild(script);
+          }
+        };
+      } catch (error) {
+        console.error("Error in auth initialization:", {
+          name: error.name,
+          message: error.message,
+          stack: error.stack
+        });
+        
+        setAuthError(error.message);
         setIsLoading(false);
       }
-
-      return () => {
-        if (script.parentNode) {
-          document.body.removeChild(script);
-        }
-      };
     };
 
     initializeAuth();
-  }, [initTelegramWebApp, fetchUserData]);
+  }, [initTelegramWebApp]);
 
-  // Выход из системы
   const logout = useCallback(() => {
+    console.log("Logging out");
     setAuthToken(null);
     setApiUser(null);
     setTgUser(null);
+    setAuthError(null);
     localStorage.removeItem('authToken');
+    sessionStorage.removeItem('tgAuthData');
   }, []);
 
-  // Предоставляем значения контекста
+  const refreshAuth = useCallback(async () => {
+    if (!authToken) return false;
+    console.log("Refreshing auth");
+    return await fetchUserData(authToken);
+  }, [authToken, fetchUserData]);
+
   const contextValue = {
     authToken,
     tgUser,
@@ -224,12 +266,7 @@ export const AuthProvider = ({ children }) => {
     authError,
     isAuthenticated: !!authToken,
     logout,
-    refreshAuth: () => {
-      if (authToken) {
-        return fetchUserData(authToken);
-      }
-      return Promise.resolve(false);
-    },
+    refreshAuth,
   };
 
   return (
@@ -239,7 +276,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Хук для использования контекста аутентификации
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
