@@ -68,9 +68,11 @@ export default async function ProductPage({ params }: { params?: { id?: string }
     <main className="min-h-screen">
       <ProductDetails product={product} />
       <ProductReviews 
-        reviews={product.reviews} 
-        productRating={product.rating} 
-      />
+  reviews={product.reviews} 
+  productRating={product.rating}
+
+  productId={params.id} // Передаем productId
+/>
       <ForYouList />
     </main>
   );

@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
+import Link from 'next/link';
 
 interface ProductDetailsProps {
   product: {
@@ -65,12 +66,13 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
     <div className="max-w-6xl mx-auto">
       {/* Верхняя панель с кнопками "Назад" и "Поиск" */}
       <div className="w-full flex mb-[3.125vw] items-center justify-between p-2">
-        <img
-          src="../img/CategoryCard/ArrowLeft.svg"
-          alt="Назад"
-          onClick={() => router.back()}
-          className="w-[4.17vw] cursor-pointer"
-        />
+        <Link href="/">
+          <img
+            src="../img/CategoryCard/ArrowLeft.svg"
+            alt="Назад"
+            className="w-[4.17vw] cursor-pointer"
+          />
+        </Link>
         <p className="text-[#EFEDF6] text-[6.25vw] font-semibold leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight">
           {truncateText(product.name)}
         </p>
@@ -103,7 +105,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                   alt={`${product.name} - ${index + 1}`}
                   className="w-full h-full object-cover"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = "/placeholder-product.png";
+                    (e.target as HTMLImageElement).src =
+                      "/placeholder-product.png";
                   }}
                 />
               </SwiperSlide>
