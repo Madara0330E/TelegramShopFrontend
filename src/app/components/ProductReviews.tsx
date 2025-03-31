@@ -134,7 +134,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({
                     {formatRating(review.rating)}
                   </p>
                   <img
-                    src="../img/ProductReviews/Star.svg"
+                    src="/../img/ProductReviews/Star.svg"
                     alt={`Оценка ${review.rating}`}
                     className="w-[3.646vw] h-[3.385vw]"
                     width={20}
