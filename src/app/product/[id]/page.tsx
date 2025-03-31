@@ -1,7 +1,7 @@
 import React from "react";
 import ProductDetails from "../../components/ProductDetails";
 import { notFound } from "next/navigation";
-import ProductReviews from '../../components/ProductReviews';
+import ProductReviews from "../../components/ProductReviews";
 import ForYouList from "../../components/ForYouList";
 
 interface Product {
@@ -26,13 +26,16 @@ interface Product {
 
 async function getProduct(id: string): Promise<Product | null> {
   try {
-    const res = await fetch(`https://shop.chasman.engineer/api/v1/products/item/${id}`, {
-      next: { revalidate: 60 }
-    });
+    const res = await fetch(
+      `https://shop.chasman.engineer/api/v1/products/item/${id}`,
+      {
+        next: { revalidate: 60 },
+      }
+    );
 
     if (!res.ok) {
       if (res.status === 404) return null;
-      throw new Error('Ошибка при загрузке товара');
+      throw new Error("Ошибка при загрузке товара");
     }
 
     const product = await res.json();
@@ -48,12 +51,16 @@ async function getProduct(id: string): Promise<Product | null> {
 
     return product;
   } catch (error) {
-    console.error('Ошибка при получении товара:', error);
+    console.error("Ошибка при получении товара:", error);
     return null;
   }
 }
 
-export default async function ProductPage({ params }: { params?: { id?: string } }) {
+export default async function ProductPage({
+  params,
+}: {
+  params?: { id?: string };
+}) {
   if (!params || !params.id) {
     return notFound();
   }
@@ -67,12 +74,11 @@ export default async function ProductPage({ params }: { params?: { id?: string }
   return (
     <main className="min-h-screen">
       <ProductDetails product={product} />
-      <ProductReviews 
-  reviews={product.reviews} 
-  productRating={product.rating}
-
-  productId={params.id} // Передаем productId
-/>
+      <ProductReviews
+        reviews={product.reviews}
+        productRating={product.rating}
+        productId={params.id} // Передаем productId
+      />
       <ForYouList />
     </main>
   );

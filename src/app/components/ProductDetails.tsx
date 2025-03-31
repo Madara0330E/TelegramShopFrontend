@@ -21,11 +21,12 @@ interface ProductDetailsProps {
     rating: number;
     reviews: any[];
   };
+  isLoading?: boolean;
 }
 
-const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
+const ProductDetails: React.FC<ProductDetailsProps> = ({ product, isLoading = false }) => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isBuyLoading, setIsBuyLoading] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [showReadMore, setShowReadMore] = useState(false);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
@@ -41,9 +42,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   };
 
   const handleBuyClick = () => {
-    setIsLoading(true);
+    setIsBuyLoading(true);
     console.log("Buying product:", product.id);
-    setTimeout(() => setIsLoading(false), 1000);
+    setTimeout(() => setIsBuyLoading(false), 1000);
   };
 
   useEffect(() => {
@@ -60,10 +61,42 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
     checkTextOverflow();
     window.addEventListener("resize", checkTextOverflow);
     return () => window.removeEventListener("resize", checkTextOverflow);
-  }, [product.description]);
+  }, [product?.description]);
+
+  if (isLoading) {
+    return (
+      <div className="div">
+        {/* Скелетон верхней панели */}
+        <div className="w-full flex mb-[3.125vw] items-center justify-between p-2">
+          <div className="w-[4.17vw] h-[4.17vw] bg-gray-700 rounded animate-pulse"></div>
+          <div className="h-[6.25vw] w-[40vw] bg-gray-700 rounded animate-pulse"></div>
+          <div className="w-[4.17vw] h-[4.17vw] bg-gray-700 rounded animate-pulse"></div>
+        </div>
+
+        {/* Скелетон карусели изображений */}
+        <div className="w-full max-w-[100vw] h-[100vw] relative bg-gray-700 animate-pulse"></div>
+
+        {/* Скелетон описания товара */}
+        <div className="flex flex-col p-2 pt-3">
+          <div className="h-[6.25vw] w-[80vw] bg-gray-700 rounded animate-pulse mb-3"></div>
+          <div className="h-[5.208vw] w-[30vw] bg-gray-700 rounded animate-pulse mb-4"></div>
+          
+          <div className="space-y-2">
+            <div className="h-[3.6458vw] w-full bg-gray-700 rounded animate-pulse"></div>
+            <div className="h-[3.6458vw] w-[90%] bg-gray-700 rounded animate-pulse"></div>
+            <div className="h-[3.6458vw] w-[80%] bg-gray-700 rounded animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return <div className="text-center py-8">Товар не найден</div>;
+  }
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="div">
       {/* Верхняя панель с кнопками "Назад" и "Поиск" */}
       <div className="w-full flex mb-[3.125vw] items-center justify-between p-2">
         <Link href="/">

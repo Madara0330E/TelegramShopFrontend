@@ -32,7 +32,8 @@ const ProductReviews: React.FC<{
   productRating: number;
   productId: string;
   showAllReviews?: boolean;
-}> = ({ reviews, productRating, productId, showAllReviews = false }) => {
+  isLoading?: boolean;
+}> = ({ reviews, productRating, productId, showAllReviews = false, isLoading = false }) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -54,50 +55,86 @@ const ProductReviews: React.FC<{
     <div className={`${showAllReviews ? '' : 'mt-3'} p-2 mb-0`}>
       {!showAllReviews && (
         <div className="div">
-          <div className="w-full flex mb-[3.125vw] items-center justify-between p-2">
-            <div className="flex items-center">
-              <span className="text-[#EFEDF6] text-[6.25vw] font-semibold leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight">
-                Отзывы
-              </span>
-              <sup className="text-[#EFEDF6] text-[4.167vw] ml-[1.042vw] font-semibold leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight">
-                {reviews.length}
-              </sup>
-            </div>
-
-            <div className="flex items-center gap-[3.125vw]">
-              <div className="flex items-center gap-[1.042vw]">
-                <p className="text-[#EFEDF6] text-[5.208vw] font-semibold leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight">
-                  {formatRating(productRating)}
-                </p>
-                <img
-                  src="../img/ProductReviews/Star.svg"
-                  alt="Рейтинг товара"
-                  className="w-[3.646vw] h-[3.385vw]"
-                  width={20}
-                  height={20}
-                />
+          {isLoading ? (
+            <div className="w-full flex mb-[3.125vw] items-center justify-between p-2">
+              <div className="flex items-center">
+                <div className="h-[6.25vw] w-[20vw] bg-[#2A282E] rounded animate-pulse"></div>
               </div>
-              {reviews.length > 0 && (
-                <button 
-                  onClick={navigateToAllReviews}
-                  className="flex items-center"
-                  aria-label="Показать все отзывы"
-                >
+              <div className="flex items-center gap-[3.125vw]">
+                <div className="flex items-center gap-[1.042vw]">
+                  <div className="h-[5.208vw] w-[8vw] bg-[#2A282E] rounded animate-pulse"></div>
+                  <div className="w-[3.646vw] h-[3.385vw] bg-[#2A282E] rounded animate-pulse"></div>
+                </div>
+                <div className="w-[4.17vw] h-[3.646vw] bg-[#2A282E] rounded animate-pulse"></div>
+              </div>
+            </div>
+          ) : (
+            <div className="w-full flex mb-[3.125vw] items-center justify-between p-2">
+              <div className="flex items-center">
+                <span className="text-[#EFEDF6] text-[6.25vw] font-semibold leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight">
+                  Отзывы
+                </span>
+                <sup className="text-[#EFEDF6] text-[4.167vw] ml-[1.042vw] font-semibold leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight">
+                  {reviews.length}
+                </sup>
+              </div>
+
+              <div className="flex items-center gap-[3.125vw]">
+                <div className="flex items-center gap-[1.042vw]">
+                  <p className="text-[#EFEDF6] text-[5.208vw] font-semibold leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight">
+                    {formatRating(productRating)}
+                  </p>
                   <img
-                    src="../img/ProductReviews/Arrow.svg"
-                    alt=""
-                    className="w-[4.17vw] h-[3.646vw] cursor-pointer"
+                    src="../img/ProductReviews/Star.svg"
+                    alt="Рейтинг товара"
+                    className="w-[3.646vw] h-[3.385vw]"
                     width={20}
                     height={20}
                   />
-                </button>
-              )}
+                </div>
+                {reviews.length > 0 && (
+                  <button 
+                    onClick={navigateToAllReviews}
+                    className="flex items-center"
+                    aria-label="Показать все отзывы"
+                  >
+                    <img
+                      src="../img/ProductReviews/Arrow.svg"
+                      alt=""
+                      className="w-[4.17vw] h-[3.646vw] cursor-pointer"
+                      width={20}
+                      height={20}
+                    />
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
 
-      {displayedReviews.length > 0 ? (
+      {isLoading ? (
+        <div className="flex flex-col gap-[2.083vw]">
+          {[...Array(showAllReviews ? 5 : 3)].map((_, index) => (
+            <div key={`skeleton-review-${index}`} className="w-full p-3 rounded-[12px]  animate-pulse">
+              <div className="flex items-center justify-between w-full mb-[2vw]">
+                <div className="flex items-center gap-[2.083vw]">
+                  <div className="w-[8.333vw] h-[8.333vw] rounded-full bg-[#2A282E]"></div>
+                  <div className="h-[4.167vw] w-[30vw] bg-[#2A282E] rounded"></div>
+                </div>
+                <div className="flex items-center gap-[1.042vw]">
+                  <div className="h-[5.208vw] w-[8vw] bg-[#2A282E] rounded"></div>
+                  <div className="w-[3.646vw] h-[3.385vw] bg-[#2A282E] rounded"></div>
+                </div>
+              </div>
+              <div className="mb-[1.5vw]">
+                <div className="h-[4.167vw] w-full bg-[#2A282E] rounded mb-1"></div>
+                <div className="h-[4.167vw] w-[80%] bg-[#2A282E] rounded"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : displayedReviews.length > 0 ? (
         <div className="flex flex-col gap-[2.083vw]">
           {displayedReviews.map((review) => (
             <div
@@ -173,7 +210,6 @@ const AllReviewsPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Unwrap the params promise
   const unwrappedParams = use(params);
   const productId = unwrappedParams.id;
 
@@ -223,7 +259,49 @@ const AllReviewsPage = ({ params }: { params: Promise<{ id: string }> }) => {
   }
 
   if (loading) {
-    return <div className="min-h-screen bg-[#1C1B20] p-4 text-white">Загрузка...</div>;
+    return (
+      <main className="min-h-screen ">
+        <div className="w-full flex justify-between items-center p-4 pl-2 pr-2">
+          <div className="w-[4.167vw] h-[3.646vw] bg-[#2A282E] rounded animate-pulse"></div>
+          <div className="flex items-center gap-[1.563vw]">
+            <div className="flex items-center">
+              <div className="h-[6.25vw] w-[20vw] bg-[#2A282E] rounded animate-pulse"></div>
+            </div>
+            <div className="div">
+              <div className="w-[1.302vw] h-[1.302vw] bg-[#2A282E] rounded-full animate-pulse"></div>
+            </div>
+            <div className="flex items-center gap-[1.042vw]">
+              <div className="h-[5.208vw] w-[8vw] bg-[#2A282E] rounded animate-pulse"></div>
+              <div className="w-[4.167vw] h-[3.906vw] bg-[#2A282E] rounded animate-pulse"></div>
+            </div>
+          </div>
+          <div className="w-[4.167vw] h-[4.167vw] bg-[#2A282E] rounded animate-pulse"></div>
+        </div>
+
+        <div className="p-4">
+          <div className="flex flex-col gap-[2.083vw]">
+            {[...Array(5)].map((_, index) => (
+              <div key={`skeleton-${index}`} className="w-full p-3 rounded-[12px] bg-[#2A282E] animate-pulse">
+                <div className="flex items-center justify-between w-full mb-[2vw]">
+                  <div className="flex items-center gap-[2.083vw]">
+                    <div className="w-[8.333vw] h-[8.333vw] rounded-full bg-[#2A282E]"></div>
+                    <div className="h-[4.167vw] w-[30vw] bg-[#2A282E] rounded"></div>
+                  </div>
+                  <div className="flex items-center gap-[1.042vw]">
+                    <div className="h-[5.208vw] w-[8vw] bg-[#2A282E] rounded"></div>
+                    <div className="w-[3.646vw] h-[3.385vw] bg-[#2A282E] rounded"></div>
+                  </div>
+                </div>
+                <div className="mb-[1.5vw]">
+                  <div className="h-[4.167vw] w-full bg-[#2A282E] rounded mb-1"></div>
+                  <div className="h-[4.167vw] w-[80%] bg-[#2A282E] rounded"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </main>
+    );
   }
 
   if (!product) {
@@ -289,6 +367,7 @@ const AllReviewsPage = ({ params }: { params: Promise<{ id: string }> }) => {
           productRating={product.rating}
           productId={productId}
           showAllReviews
+          isLoading={false}
         />
       </div>
     </main>
