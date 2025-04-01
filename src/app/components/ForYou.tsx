@@ -56,7 +56,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
           className="w-full h-full object-contain"
           loading="lazy"
           onError={(e) => {
-            (e.target as HTMLImageElement).src = '/placeholder-product.png';
+            (e.target as HTMLImageElement).src = '/../img/ProductDetails/EroroIcon.svg';
           }}
         />
 

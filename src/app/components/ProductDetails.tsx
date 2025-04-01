@@ -52,7 +52,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, isLoading = fa
       if (descriptionRef.current) {
         const element = descriptionRef.current;
         const lineHeight = parseInt(getComputedStyle(element).lineHeight) || 24;
-        const maxHeight = lineHeight * 2;
+        const maxHeight = lineHeight * 3;
 
         setShowReadMore(element.scrollHeight > maxHeight);
       }
@@ -134,12 +134,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, isLoading = fa
             {product.imgUrls.map((imgUrl, index) => (
               <SwiperSlide key={index}>
                 <img
-                  src={imgUrl || "/placeholder-product.png"}
+                  src={imgUrl || "/../img/ProductDetails/EroroIcon.svg"}
                   alt={`${product.name} - ${index + 1}`}
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src =
-                      "/placeholder-product.png";
+                      "/../img/ProductDetails/EroroIcon.svg";
                   }}
                 />
               </SwiperSlide>
