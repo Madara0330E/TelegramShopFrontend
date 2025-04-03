@@ -90,12 +90,12 @@ export default function CartPage() {
     <div className="min-h-screen flex flex-col">
       <header className="flex p-4 justify-between items-center">
         <Link href="/" className="p-2">
-          <img src="/img/Arrow.svg" alt="Back" className="w-6 h-6" />
+          <img src="/img/Arrow.svg" alt="Back" className="w-[4.167vw] h-[3.646vw]" />
         </Link>
         <div className="flex items-center">
-          <span className="text-white text-2xl font-semibold">Корзина</span>
+          <span className="text-[#EFEDF6] text-[6.25vw] font-semibold leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight">Корзина</span>
           {cartItems.length > 0 && (
-            <sup className="text-white text-lg ml-1 font-semibold">
+            <sup className="text-[#EFEDF6] text-[4.167vw] ml-[1.042vw] font-semibold leading-normal [font-feature-settings:'salt'_on,'ss03'_on,'cv01'_on] font-inter-tight">
               {cartItems.length}
             </sup>
           )}
@@ -127,16 +127,10 @@ export default function CartPage() {
         </main>
       ) : (
         <main className="flex-grow flex items-center justify-center">
-          <div className="text-center w-2/3 max-w-md">
-            <p className="text-white text-xl font-semibold">Тут пусто и грустно</p>
-            <p className="text-gray-400 text-lg mt-2">Наполни корзину товарами из каталога</p>
-            <Link 
-              href="/" 
-              className="mt-6 inline-block bg-blue-500 text-white px-6 py-3 rounded-md font-medium"
-            >
-              В каталог
-            </Link>
-          </div>
+          <div className="text-center w-[66.667vw]">
+             <p className="text-[#EFEDF6] text-[4.167vw] font-inter-tight font-semibold leading-normal">Тут пусто и грустно</p>
+             <p className="text-[#EFEDF6] opacity-50 text-[4.167vw] font-inter-tight font-medium leading-normal">Наполни корзину товарами из каталога</p>
+           </div>
         </main>
       )}
     </div>
