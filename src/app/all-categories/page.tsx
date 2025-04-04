@@ -5,20 +5,22 @@ import CategoryCard from "../components/CategoryCard";
 import { useRouter } from "next/navigation";
 import { useCategories } from "../context/CategoriesContext";
 
-// Полное определение типа Category
+// Use the same type as your categoryApi
 type Category = {
   id: string | number;
   name: string;
-  image: string;
+  // Make image optional if it might not exist
+  image?: string;
+  // Include other properties that exist in your API response
   slug?: string;
-  // Дополнительные поля при необходимости
 };
 
 export default function AllCategories() {
   const { categories, isLoading, error } = useCategories();
   const router = useRouter();
 
-  // Обработка ошибок и загрузки
+  console.log('Categories data:', categories); // Debug log
+
   if (isLoading) {
     return (
       <div className="flex flex-col gap-2">
@@ -37,12 +39,10 @@ export default function AllCategories() {
     return <div className="text-center py-8 text-red-500">Error: {error}</div>;
   }
 
-  // Проверка на наличие categories
   if (!categories || !Array.isArray(categories)) {
     return <div className="text-center py-8">Категории не загружены</div>;
   }
 
-  // Безопасная функция для разбиения массива
   const chunkArray = (array: Category[], size: number): Category[][] => {
     if (!array || !array.length) return [];
     const result: Category[][] = [];
@@ -53,10 +53,10 @@ export default function AllCategories() {
   };
 
   const categoriesChunks = chunkArray(categories, 4);
-  console.log('Categories data:', categories);
+
   return (
     <div className="flex flex-col p-2">
-      {/* Шапка */}
+      {/* Header */}
       <div className="w-full flex mb-[3.125vw] items-center justify-between">
         <img
           src="img/CategoryCard/ArrowLeft.svg"
@@ -74,7 +74,7 @@ export default function AllCategories() {
         />
       </div>
 
-      {/* Основной контент */}
+      {/* Content */}
       {categories.length === 0 ? (
         <div className="text-center py-8">Категории не найдены</div>
       ) : categories.length <= 4 ? (
@@ -93,9 +93,7 @@ export default function AllCategories() {
             </div>
           ))}
         </div>
-        
       )}
-      
     </div>
   );
 }
