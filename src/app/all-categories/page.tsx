@@ -1,4 +1,3 @@
-// src/app/all-categories/page.tsx
 "use client";
 
 import React from "react";
@@ -6,17 +5,47 @@ import CategoryCard from "../components/CategoryCard";
 import { useRouter } from "next/navigation";
 import { useCategories } from "../context/CategoriesContext";
 
+// Полное определение типа Category
+type Category = {
+  id: string | number;
+  name: string;
+  image: string;
+  slug?: string;
+  // Дополнительные поля при необходимости
+};
+
 export default function AllCategories() {
   const { categories, isLoading, error } = useCategories();
   const router = useRouter();
+
+  // Обработка ошибок и загрузки
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-2">
+        {[...Array(4)].map((_, rowIndex) => (
+          <div key={`skeleton-row-${rowIndex}`} className="grid grid-cols-4 gap-2">
+            {[...Array(4)].map((_, cardIndex) => (
+              <CategoryCard key={`skeleton-${rowIndex}-${cardIndex}`} isLoading />
+            ))}
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   if (error) {
     return <div className="text-center py-8 text-red-500">Error: {error}</div>;
   }
 
-  // Функция для разбиения массива на группы по 4 элемента
-  const chunkArray = (array: Category[], size: number) => {
-    const result = [];
+  // Проверка на наличие categories
+  if (!categories || !Array.isArray(categories)) {
+    return <div className="text-center py-8">Категории не загружены</div>;
+  }
+
+  // Безопасная функция для разбиения массива
+  const chunkArray = (array: Category[], size: number): Category[][] => {
+    if (!array || !array.length) return [];
+    const result: Category[][] = [];
     for (let i = 0; i < array.length; i += size) {
       result.push(array.slice(i, i + size));
     }
@@ -24,7 +53,7 @@ export default function AllCategories() {
   };
 
   const categoriesChunks = chunkArray(categories, 4);
-
+  console.log('Categories data:', categories);
   return (
     <div className="flex flex-col p-2">
       {/* Шапка */}
@@ -45,28 +74,16 @@ export default function AllCategories() {
         />
       </div>
 
-      {/* Контент */}
-      {isLoading ? (
-        <div className="flex flex-col gap-2">
-          {[...Array(4)].map((_, rowIndex) => (
-            <div key={`skeleton-row-${rowIndex}`} className="grid grid-cols-4 gap-2">
-              {[...Array(4)].map((_, cardIndex) => (
-                <CategoryCard key={`skeleton-${rowIndex}-${cardIndex}`} isLoading />
-              ))}
-            </div>
-          ))}
-        </div>
-      ) : categories.length === 0 ? (
+      {/* Основной контент */}
+      {categories.length === 0 ? (
         <div className="text-center py-8">Категории не найдены</div>
       ) : categories.length <= 4 ? (
-        // Для 1-4 элементов - простой flex без разбивки на строки
         <div className="flex flex-wrap gap-2 justify-start">
           {categories.map((category) => (
             <CategoryCard key={category.id} category={category} />
           ))}
         </div>
       ) : (
-        // Для большего количества - разбивка по строкам
         <div className="flex flex-col gap-2">
           {categoriesChunks.map((chunk, index) => (
             <div key={`row-${index}`} className="grid grid-cols-4 gap-2">
@@ -76,7 +93,9 @@ export default function AllCategories() {
             </div>
           ))}
         </div>
+        
       )}
+      
     </div>
   );
 }
