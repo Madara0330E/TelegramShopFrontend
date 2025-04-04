@@ -1,10 +1,10 @@
+// src/app/layout.js
 "use client";
 import { AuthProvider } from "../app/context/AuthContext";
+import { CartProvider } from "../app/context/CartContext";
 import Header from "./components/Header";
 import "./globals.css";
 import { useEffect, useState } from 'react';
-
-
 
 export default function RootLayout({ children }) {
   const [isClient, setIsClient] = useState(false);
@@ -29,15 +29,17 @@ export default function RootLayout({ children }) {
       </head>
       <body className="m-0 min-h-screen flex flex-col bg-[#0E0D10]">
         <AuthProvider>
-          <header className="sticky top-0 z-50 h-[68px] w-full">
-            <div className="w-full text-white">
-              <Header />
-            </div>
-          </header>
-          
-          <main className=" bg-[#0E0D10] ">
-            {children}
-          </main>
+          <CartProvider>
+            <header className="sticky top-0 z-50 h-[68px] w-full">
+              <div className="w-full text-white">
+                <Header />
+              </div>
+            </header>
+            
+            <main className=" bg-[#0E0D10] ">
+              {children}
+            </main>
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>

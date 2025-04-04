@@ -1,69 +1,11 @@
+// src/app/cart/page.tsx
 "use client";
 
 import Link from "next/link";
-import { useAuth } from "../context/AuthContext";
-import { useEffect, useState } from "react";
-
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-}
-
-interface CartItem {
-  product: Product;
-  quantity: number;
-}
-
-interface CartData {
-  items: CartItem[];
-}
+import { useCart } from "../context/CartContext";
 
 export default function CartPage() {
-  const { authToken } = useAuth();
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!authToken) {
-      console.log("No authToken available");
-      return;
-    }
-
-    console.log("Fetching cart items with token:", authToken);
-
-    setIsLoading(true);
-    setError(null);
-
-    fetch("https://shop.chasman.engineer/api/v1/cart", {
-      headers: {
-        Authorization: `${authToken}`,
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data: CartData) => {
-        console.log("Fetched cart data:", data);
-        if (data.items && Array.isArray(data.items)) {
-          setCartItems(data.items);
-        } else {
-          console.error("Unexpected data format:", data);
-          setCartItems([]);
-        }
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch cart items:", err);
-        setError("Failed to fetch cart items. Please try again later.");
-        setIsLoading(false);
-      });
-  }, [authToken]);
+  const { cartItems, isLoading, error, refreshCart } = useCart();
 
   if (isLoading) {
     return <div className="h-screen flex items-center justify-center">Loading...</div>;
@@ -77,7 +19,7 @@ export default function CartPage() {
           <p className="text-red-500">{error}</p>
           <button 
             className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
-            onClick={() => window.location.reload()}
+            onClick={refreshCart}
           >
             Try Again
           </button>
