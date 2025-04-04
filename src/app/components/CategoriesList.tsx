@@ -1,31 +1,13 @@
+// src/app/components/CategoriesList.tsx
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import CategoryCard from "./CategoryCard";
-import { fetchCategories, Category } from "./categoryApi";
+import { useCategories } from "../context/CategoriesContext";
 
 const CategoriesList: React.FC = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const getCategories = async () => {
-      try {
-        const data = await fetchCategories();
-        setCategories(data);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "An unknown error occurred"
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getCategories();
-  }, []);
+  const { categories, isLoading, error } = useCategories();
 
   if (error) {
     return <div className="text-center py-8 text-red-500">Error: {error}</div>;
@@ -49,7 +31,7 @@ const CategoriesList: React.FC = () => {
         </Link>
       </div>
 
-      {loading ? (
+      {isLoading ? (
         <div className="grid grid-cols-4 gap-[2.08vw]">
           {[...Array(8)].map((_, index) => (
             <CategoryCard key={`skeleton-${index}`} isLoading />

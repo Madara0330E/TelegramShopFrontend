@@ -1,32 +1,14 @@
+// src/app/all-categories/page.tsx
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CategoryCard from "../components/CategoryCard";
 import { useRouter } from "next/navigation";
-import { fetchCategories, Category } from "../components/categoryApi";
+import { useCategories } from "../context/CategoriesContext";
 
 export default function AllCategories() {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const { categories, isLoading, error } = useCategories();
   const router = useRouter();
-
-  useEffect(() => {
-    const getCategories = async () => {
-      try {
-        const data = await fetchCategories();
-        setCategories(data);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "An unknown error occurred"
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getCategories();
-  }, []);
 
   if (error) {
     return <div className="text-center py-8 text-red-500">Error: {error}</div>;
@@ -64,7 +46,7 @@ export default function AllCategories() {
       </div>
 
       {/* Контент */}
-      {loading ? (
+      {isLoading ? (
         <div className="flex flex-col gap-2">
           {[...Array(4)].map((_, rowIndex) => (
             <div key={`skeleton-row-${rowIndex}`} className="grid grid-cols-4 gap-2">

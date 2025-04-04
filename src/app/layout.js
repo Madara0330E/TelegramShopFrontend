@@ -2,6 +2,7 @@
 "use client";
 import { AuthProvider } from "../app/context/AuthContext";
 import { CartProvider } from "../app/context/CartContext";
+import { CategoriesProvider } from "../app/context/CategoriesContext";
 import Header from "./components/Header";
 import "./globals.css";
 import { useEffect, useState } from 'react';
@@ -30,15 +31,17 @@ export default function RootLayout({ children }) {
       <body className="m-0 min-h-screen flex flex-col bg-[#0E0D10]">
         <AuthProvider>
           <CartProvider>
-            <header className="sticky top-0 z-50 h-[68px] w-full">
-              <div className="w-full text-white">
-                <Header />
-              </div>
-            </header>
-            
-            <main className=" bg-[#0E0D10] ">
-              {children}
-            </main>
+            <CategoriesProvider>
+              <header className="sticky top-0 z-50 h-[68px] w-full">
+                <div className="w-full text-white">
+                  <Header />
+                </div>
+              </header>
+              
+              <main className=" bg-[#0E0D10] ">
+                {children}
+              </main>
+            </CategoriesProvider>
           </CartProvider>
         </AuthProvider>
       </body>
